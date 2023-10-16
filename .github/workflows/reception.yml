@@ -1,0 +1,29 @@
+name: Reception API
+
+on:
+  repository_dispatch:
+    types: [reception]
+
+jobs:
+  Remove_customer:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Edit file
+        env:
+          NUMBER: ${{ github.event.client_payload.number }}
+        run: |
+          # edit file
+          NUMBER="${NUMBER},"
+          sed "s/$NUMBER//g" wait_list.txt > wait_list.txt
+      
+      # commit file
+      - name: Commit file to the repository
+        run: |
+          # Commit change
+          git config --global user.name "MommaWatasu"
+          git config --global user.email "ascendwatson@gmail.com"
+          git add wait_list.txt
+          git commit -m "Added No.$Number Customer"
+          git push origin master
