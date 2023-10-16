@@ -5,7 +5,7 @@ on:
     types: [customer]
 
 jobs:
-  edit_file:
+  Add_customer:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
