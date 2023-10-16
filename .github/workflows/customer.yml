@@ -11,33 +11,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Edit file
-        uses: actions/github-script@v4
-        with:
-          script: |
-            const fs = require('fs');
-            const path = require('path');
-            // Get the file path and content from the HTTP request payload
-            const filePath = "wait_list.txt";
-            const fileContent = context.payload.client_payload.file_content;
-            // Write the new content to the file
-            fs.writeFileSync(path.join(process.env.GITHUB_WORKSPACE, filePath), fileContent);
-            // Commit and push the changes
-            await github.git.createCommit({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              message: 'Add customer into the wait list',
-              tree: process.env.GITHUB_SHA,
-              parents: [context.sha],
-              author: {
-                name: 'GitHub Actions',
-                email: 'actions@github.com'
-              }
-            }).then(res => {
-              github.git.updateRef({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                ref: 'heads/master', // Change this to your default branch name
-                sha: res.data.sha,
-                force: true
-              });
-            });
+        env:
+          NUMBER: ${{ github.event.client_payload.number }}
+        run: |
+          # edit file
+          echo "$NUMBER" >> wait_list.txt
+      
+      # commit file
+      - name: Commit file to the repository
+        run: |
+          # Commit change
+          git config --global user.name "MommaWatasu"
+          git config --global user.email "ascendwatson@gmail.com"
+          git add wait_list.txt
+          git commit -m "Added No.$Number Customer"
+          git push origin master
