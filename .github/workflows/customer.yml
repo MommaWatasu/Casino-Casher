@@ -17,6 +17,7 @@ jobs:
           NUMBER: ${{ github.event.client_payload.number }}
         run: |
           # edit file
+          NUMBER="${NUMBER},"
           echo "$NUMBER" >> wait_list.txt
       
       # commit file
