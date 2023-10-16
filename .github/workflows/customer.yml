@@ -17,7 +17,7 @@ jobs:
             const fs = require('fs');
             const path = require('path');
             // Get the file path and content from the HTTP request payload
-            const filePath = wait_list.txt;
+            const filePath = "wait_list.txt";
             const fileContent = context.payload.client_payload.file_content;
             // Write the new content to the file
             fs.writeFileSync(path.join(process.env.GITHUB_WORKSPACE, filePath), fileContent);
