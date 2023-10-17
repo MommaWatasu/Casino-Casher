@@ -1,15 +1,12 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link rel="stylesheet" href="customer.css">
     <title>Casino Casher</title>
   </head>
   <body>
+    <script src="customer.js"></script>
     <script>
-      function reserve() {
-        google.script.run
-          .withSuccessHandler(reserve_success)
-          .reserve();
-      }
       function reserve_success(id) {
         alert("予約が完了しました。");
         document.cookie = "id="+id;
