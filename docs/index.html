@@ -1,16 +1,43 @@
+<!DOCTYPE html>
 <html>
-    <head>
-        <title>1-1HR 受付ページ</title>
-        <link rel="stylesheet" href="customer.css">
-    </head>
-    <body>
-        <!-- load iJavascript-->
-        <script src="customer.js"></script>
-        <h1>受付ページ</h1>
-        <div class="container">
-            <p>こちらのボタンをクリックして、受付を行ってください。</p>
-            <!-- create a button to reserve -->
-            <button id="reserve" class="button">受付する</button>
-        </div>
-    </body>
+  <head>
+    <title>Casino Casher</title>
+  </head>
+  <body>
+    <script>
+      function reserve() {
+        google.script.run
+          .withSuccessHandler(reserve_success)
+          .reserve();
+      }
+      function reserve_success(id) {
+        alert("予約が完了しました。");
+        document.cookie = "id="+id;
+        document.location.reload();
+      }
+      window.onload = function(){
+        let id_index = document.cookie.indexOf("id");
+        if (id_index == -1) {
+          document.getElementById("reserved").remove();
+        } else {
+          document.getElementById("not_reserved").remove();
+        }
+      }
+    </script>
+    <!-- load iJavascript-->
+    <h1>1-1HRデコ 予約サイト</h1>
+    <div class="container">
+      <div id="not_reserved">
+        <p>こちらのボタンをクリックして、予約を行ってください。</p>
+        <p>注:予約を行う際、予約番号を保存する目的でcookieを使います。</p>
+        <!-- create a button to reserve -->
+        <button id="reserve" class="button" onclick="reserve()">予約する</button>
+      </div>
+      <div id="reserved">
+        <p>あなたの予約番号は</p><br>
+        <div id="reserve_id"></div>
+        <p>予想待ち時間：<div id="wait_time"></div></p>
+      </div>
+    </div>
+  </body>
 </html>
