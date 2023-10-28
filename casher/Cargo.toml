@@ -4,6 +4,8 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+chrono = "0.4.31"
 json = "0.12.4"
 rocket = "0.4.11"
+rocket_cors = "0.5.2"
 spin = "0.9.8"

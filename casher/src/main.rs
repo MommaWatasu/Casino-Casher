@@ -1,58 +1,96 @@
 #![feature(proc_macro_hygiene, decl_macro)]
 
-use std::net::{SocketAddr, IpAddr};
-use std::cell::{
-    Cell,
-    RefCell
+use chrono::prelude::*;
+use json::object;
+use rocket::{get, post, routes};
+use rocket_cors::CorsOptions;
+use spin::{
+    Mutex,
+    Lazy
 };
 
-use json::object;
-use rocket::{get, routes};
-use spin::Mutex;
-
-const COUNT_LIMIT: u32 = 10;
+const COUNT_LIMIT: u32 = 6;
 static WAIT_LIST: Mutex<Vec<User>> = Mutex::new(Vec::new());
-static LAST_ID: Mutex<usize> = Mutex::new(1);
+static RESERVE_TABLE: Lazy<Mutex<Vec<u32>>> = Lazy::new(|| Mutex::new(vec![0; 14])); 
 
-#[derive(Debug)]
+struct Time{
+    hour: usize,
+    minute: usize
+}
+
+impl Time {
+    pub fn cmp(&self, other: Self) -> bool {
+        println!("self hour: {}, other hour: {}", self.hour, other.hour);
+        if self.hour < other.hour {
+            return true
+        } else if self.hour == other.hour && self.minute < other.minute {
+            return true
+        } else {
+            return false
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
 struct User {
-    pub id: usize,
+    pub ip: String,
     pub time: usize
 }
 
-#[get("/register?<time>")]
-fn register(time: usize) -> String {
+#[get("/register?<time>&<ip>")]
+fn register(mut time: usize, ip: String) -> String {
     let mut json = object!{
-        status: false
+        status: false,
+        err: 1
     };
-    if check_count(time) < COUNT_LIMIT {
-        let mut last_id = LAST_ID.lock();
-        let mut wait_list = WAIT_LIST.lock();
-        wait_list.push(User{id: *last_id, time});
+    let now = Local::now();
+    let hour = format!("{}", now.format("%H")).parse::<usize>().unwrap();
+    println!("hour: {}", hour);
+    let minute = format!("{}", now.format("%M")).parse::<usize>().unwrap();
+    let now_time = Time{hour, minute};
+    if time == 0 {
+        for i in 0..14 {
+            if RESERVE_TABLE.lock()[i] < COUNT_LIMIT {
+                time = i+1;
+                break
+            }
+        }
+    }
+    let specified_time = Time{hour: (time+1)/2+9, minute: if time%2==1 {0} else {30}};
+    if specified_time.cmp(now_time) {
         json = object!{
-            status: true,
-            id: *last_id
+            status: false,
+            err: 2
         };
-        *last_id += 1;
+        return json.dump()
+    }
+    if check_count(time) < COUNT_LIMIT {
+        let mut wait_list = WAIT_LIST.lock();
+        wait_list.push(User{ip, time});
+        json = object!{
+            status: true
+        };
     }
     return json.dump()
 }
 
-#[get("/get_count?<time>")]
-fn get_count(time: usize) -> String {
-    format!("{}", check_count(time))
+#[get("/get_time?<ip>")]
+fn get_time(ip: String) -> String {
+    let json = object! {
+        time: check_time(ip)
+    };
+    return json.dump()
 }
 
-#[get("/remove?<time>")]
-fn remove(time: usize) -> String {
-    match find_time(time) {
+#[post("/remove?<ip>")]
+fn remove(ip: String) -> String {
+    match find_ip(ip) {
         Some(idx) => {
             WAIT_LIST.lock().remove(idx);
-            *LAST_ID.lock() -= 1;
             return String::from("true")
         },
         None => {
-            println!("invalid time");
+            println!("invalid ip");
             return String::from("false")
         }
     }
@@ -66,13 +104,24 @@ fn check_count(time: usize) -> u32 {
             count += 1;
         }
     }
-    return count
+    return count;
 }
 
-fn find_time(time: usize) -> Option<usize> {
+fn check_time(ip: String) -> isize {
     let len = WAIT_LIST.lock().len();
     for i in 0..len {
-        if WAIT_LIST.lock()[i].time == time {
+        let user = WAIT_LIST.lock()[i].clone();
+        if user.ip == ip {
+            return user.time as isize
+        }
+    }
+    return -1;
+}
+
+fn find_ip(ip: String) -> Option<usize> {
+    let len = WAIT_LIST.lock().len();
+    for i in 0..len {
+        if WAIT_LIST.lock()[i].ip == ip {
             return Some(i)
         }
     }
@@ -80,5 +129,8 @@ fn find_time(time: usize) -> Option<usize> {
 }
 
 fn main() {
-    rocket::ignite().mount("/", routes![register, remove, get_count]).launch();
+    rocket::ignite()
+        .mount("/", routes![register, remove, get_time])
+        .attach(CorsOptions::default().to_cors().expect("error"))
+        .launch();
 } 
