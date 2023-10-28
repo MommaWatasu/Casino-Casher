@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<meta charset="UTF-8">
+		<title>イカサマカジノ予約</title>
+        <link rel="stylesheet" href="index.css">
+        <link rel="stylesheet" href="pulldown.css">
+    </head>
+    <body>
+        <script type="text/javascript" src="reserve.js"></script>
+        <div class="container">
+            <div class="header">
+                <img src="picture/title.png" alt="カジノロゴ" class="logo">
+                <ul class="nav">
+                    <li><a href="index.html">ホーム</a></li>
+                    <li><a href="#">予約</a></li>
+                </ul>
+            </div>
+            <div class="content">
+                <h2>整理券</h2>
+                <p>
+                    1-1のイカサマカジノでは、混雑回避のため、ウェブでの予約システムを使用しています。
+                    デフォルトでは今空いている最も早い時間を予約しますが、もし他の時間を予約したい場合は以下のプルダウンリストから選択してください。<br>
+                    また、時間選択は30分区切りですが、実際には5分ごとの案内となるので、ご了承ください。
+                </p>
+                <div id = "reserve">
+                    <div class="dropdown">
+                        <select class="classic" id="time-select"> <!-- プルダウンの内容 -->
+                            <option value="0">時間選択</option>
+                            <option value="1">9:30~10:00</option>
+                            <option value="2">10:00~10:30</option>
+                            <option value="3">10:30~11:00</option>
+                            <option value="4">11:00~11:30</option>
+                            <option value="5">11:30~12:00</option>
+                            <option value="6">12:00~12:30</option>
+                            <option value="7">12:30~13:00</option>
+                            <option value="8">13:00~13:30</option>
+                            <option value="9">13:30~14:00</option>
+                            <option value="10">14:00~14:30</option>
+                            <option value="11">14:30~15:00</option>
+                            <option value="12">15:00~15:30</option>
+                            <option value="13">15:30~16:00</option>
+                            <option value="14">16:00~16:30</option>
+                        </select>
+                    </div>
+                    <div class="button" onclick="reserve()">予約</div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

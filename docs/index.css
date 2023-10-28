@@ -1,0 +1,99 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #000;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.logo {
+    width: 560px;
+    height: 115px;
+}
+
+.nav {
+    list-style: none;
+    display: flex;
+}
+
+.nav li {
+    margin-left: 20px;
+}
+
+.nav a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 40px;
+}
+
+.nav a:hover {
+    color: #f00;
+}
+
+.banner {
+    height: 600px;
+    background-image: url("./picture/logo.png");
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.banner h1 {
+    color: #fff;
+    font-size: 60px;
+    text-shadow: 2px 2px 4px #000;
+}
+
+.banner h1 span {
+    color: #f00;
+}
+
+.content {
+    padding: 40px;
+}
+
+.content h2 {
+    color: #f00;
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+.content p {
+    color: #fff;
+    font-size: 20px;
+    line-height: 1.5;
+}
+.button {
+    width: 200px;
+    height: 50px;
+    border-radius: 10px;
+    background-color: #f00;
+    color: #fff;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 50px;
+    margin: 0 auto; /* 中央に配置 */
+}
+
+#result {
+    text-align: center;
+    font-size: 50px;
+}

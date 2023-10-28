@@ -1,40 +1,26 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <link rel="stylesheet" href="customer.css">
-    <title>Casino Casher</title>
-  </head>
-  <body>
-    <script src="customer.js"></script>
-    <script>
-      function reserve_success(id) {
-        alert("予約が完了しました。");
-        document.cookie = "id="+id;
-        document.location.reload();
-      }
-      window.onload = function(){
-        let id_index = document.cookie.indexOf("id");
-        if (id_index == -1) {
-          document.getElementById("reserved").remove();
-        } else {
-          document.getElementById("not_reserved").remove();
-        }
-      }
-    </script>
-    <!-- load iJavascript-->
-    <h1>1-1HRデコ 予約サイト</h1>
-    <div class="container">
-      <div id="not_reserved">
-        <p>こちらのボタンをクリックして、予約を行ってください。</p>
-        <p>注:予約を行う際、予約番号を保存する目的でcookieを使います。</p>
-        <!-- create a button to reserve -->
-        <button id="reserve" class="button" onclick="reserve()">予約する</button>
-      </div>
-      <div id="reserved">
-        <p>あなたの予約番号は</p><br>
-        <div id="reserve_id"></div>
-        <p>予想待ち時間：<div id="wait_time"></div></p>
-      </div>
-    </div>
-  </body>
+<html lang="ja">
+	<head>
+		<meta charset="UTF-8">
+		<title>イカサマカジノホーム</title>
+        <link rel="stylesheet" href="index.css">
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <img src="picture/title.png" alt="カジノロゴ" class="logo">
+                <ul class="nav">
+                    <li><a href="#">ホーム</a></li>
+                    <li><a href="reserve.html">予約</a></li>
+                </ul>
+            </div>
+            <div class="banner">
+                <h1>イカサマカジノへようこそ<span>!</span></h1>
+            </div>
+            <div class="content">
+                <h2>イカサマカジノとは？</h2>
+                <p>カジノとは、さまざまな種類のゲームを楽しめる場所です。スロットマシン、ルーレット、ブラックジャック、ポーカーなどのゲームで運と技術を試してみましょう。カジノでは、現金やチップを賭けてゲームに参加することができます。勝てば賞金を獲得できますが、負ければ賭け金を失います。カジノはスリルと興奮に満ちたエンターテイメントの世界です。</p>
+            </div>
+        </div>
+    </body>
 </html>
