@@ -16,14 +16,34 @@ function reserve() {
         alert("予約できました");
         window.location.reload();
       } else if (data.err == 2) {
-        alert("予約に失敗しました。無効な時間です。");
+        alert("予約に失敗しました\n無効な時間です");
       } else {
-        alert("予約に失敗しました。");
+        alert("予約に失敗しました");
       }
     } else {
       alert(`予約に失敗しました: ${xhr.status}`);
     }
   };
+}
+
+function cancel() {
+  const xhr = new XMLHttpRequest();
+  xhr.open("POST", backend_url+"/remove?ip="+String(ip));
+  xhr.send();
+  xhr.responseType = "text";
+  xhr.onload = () => {
+    if (xhr.readyState == 4 && xhr.status == 200) {
+      const data = xhr.response;
+      if (data == "true") {
+        alert("キャンセルしました");
+        window.location.reload();
+      } else {
+        alert("キャンセルに失敗しました\n無効なIPアドレスです")
+      }
+    } else {
+      alert(`キャンセルに失敗しました: ${xhr.status}`);
+    }
+  }
 }
 
 window.addEventListener("load", async function() {
@@ -38,7 +58,7 @@ window.addEventListener("load", async function() {
     if (xhr.readyState == 4 && xhr.status == 200) {
       const data = xhr.response;
       if (data.time != -1) {
-        document.getElementById("reserve").innerHTML = `<p id="result">${times[data.time-1]}</p>`;
+        document.getElementById("reserve").innerHTML = `<p id="result">${times[data.time-1]}</p><br><p>予約をキャンセルする場合は以下のボタンを押してください</p><div class="button" onclick="cancel()">キャンセル</div>`;
       }
     } else {}
   };
