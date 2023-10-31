@@ -50,7 +50,7 @@ window.addEventListener("load", async function() {
   while (ip == "") {
     ip = await fetch('https://ipinfo.io?callback')
       .then(res => res.json())
-      .then(json => console.log(json.ip))
+      .then(json => json.ip)
       .catch((err) => this.alert("IPアドレスの取得に失敗しました。広告ブロックやトラッキングを解除してください"));
   }
   const xhr = new XMLHttpRequest();
