@@ -70,6 +70,11 @@ fn register(mut time: usize, ip: String) -> String {
         json = object!{
             status: true
         };
+    } else {
+        json = object!{
+            status: false,
+            err: 3
+        };
     }
     return json.dump()
 }

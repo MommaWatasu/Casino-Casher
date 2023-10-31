@@ -17,6 +17,8 @@ function reserve() {
         window.location.reload();
       } else if (data.err == 2) {
         alert("予約に失敗しました\n無効な時間です");
+      } else if (data.err == 3) {
+        alert("予約に失敗しました\n定員オーバーなので、他の時間を選択してください")
       } else {
         alert("予約に失敗しました");
       }
