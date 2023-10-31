@@ -49,12 +49,10 @@ function cancel() {
 }
 
 window.addEventListener("load", async function() {
-  while (ip == "") {
-    ip = await fetch('https://ipinfo.io?callback')
-      .then(res => res.json())
-      .then(json => json.ip)
-      .catch((err) => this.alert("IPアドレスの取得に失敗しました。広告ブロックやトラッキングを解除してください"));
-  }
+  ip = await fetch('https://ipinfo.io?callback')
+    .then(res => res.json())
+    .then(json => json.ip)
+    .catch((err) => this.alert("IPアドレスの取得に失敗しました。広告ブロックやトラッキングを解除してください"), window.location.reload());
   const xhr = new XMLHttpRequest();
   xhr.open("GET", backend_url+"/get_time?ip="+String(ip));
   xhr.send();
