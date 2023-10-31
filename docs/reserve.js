@@ -53,8 +53,8 @@ window.addEventListener("load", async function() {
     .then(res => res.json())
     .then(json => json.ip)
     .catch((err) => {
-      if (alert("IPアドレスの取得に失敗しました。広告ブロックやトラッキングを解除してください")) {
-        this.window.location.reload();
+      if (!alert("IPアドレスの取得に失敗しました。広告ブロックやトラッキングを解除してください")) {
+        window.location.reload();
       }
     });
   const xhr = new XMLHttpRequest();
