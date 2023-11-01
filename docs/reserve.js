@@ -12,15 +12,15 @@ function reserve() {
   xhr.onload = () => {
     if (xhr.readyState == 4 && xhr.status == 200) {
       const data = xhr.response;
-      if (data.status) {
+      if (data.status == 0) {
         alert("予約できました");
         window.location.reload();
-      } else if (data.err == 2) {
+      } else if (data.status == 1) {
         alert("予約に失敗しました\n無効な時間です");
-      } else if (data.err == 3) {
+      } else if (data.status == 2) {
         alert("予約に失敗しました\n定員オーバーなので、他の時間を選択してください")
       } else {
-        alert("予約に失敗しました");
+        alert("予約に失敗しました\nすでに予約されています");
       }
     } else {
       alert(`予約に失敗しました: ${xhr.status}`);
