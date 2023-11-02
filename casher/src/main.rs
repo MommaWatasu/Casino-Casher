@@ -13,6 +13,7 @@ const COUNT_LIMIT: u32 = 6;
 static WAIT_LIST: Mutex<Vec<User>> = Mutex::new(Vec::new());
 static RESERVE_TABLE: Lazy<Mutex<Vec<u32>>> = Lazy::new(|| Mutex::new(vec![0; 14])); 
 
+#[derive(Clone, Copy)]
 struct Time{
     hour: usize,
     minute: usize
@@ -45,24 +46,24 @@ fn register(mut time: usize, ip: String) -> String {
     };
     let now = Local::now();
     let hour = format!("{}", now.format("%H")).parse::<usize>().unwrap();
-    println!("hour: {}", hour);
     let minute = format!("{}", now.format("%M")).parse::<usize>().unwrap();
     let now_time = Time{hour, minute};
     if time == 0 {
         for i in 0..14 {
-            if RESERVE_TABLE.lock()[i] < COUNT_LIMIT {
+            if RESERVE_TABLE.lock()[i] < COUNT_LIMIT && !(Time{hour: (i+2)/2+9, minute: if (i+1)%2==1 {0} else {30}}).cmp(now_time){
                 time = i+1;
                 break
             }
         }
-    }
-    let specified_time = Time{hour: (time+1)/2+9, minute: if time%2==1 {0} else {30}};
-    if specified_time.cmp(now_time) {
-        json = object!{
-            status: false,
-            err: 2
-        };
-        return json.dump()
+    } else {
+        let specified_time = Time{hour: (time+1)/2+9, minute: if time%2==1 {0} else {30}};
+        if specified_time.cmp(now_time) {
+            json = object!{
+                status: false,
+                err: 2
+            };
+            return json.dump()
+        }
     }
     if check_count(time) < COUNT_LIMIT {
         let mut wait_list = WAIT_LIST.lock();
