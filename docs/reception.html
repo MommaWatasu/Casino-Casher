@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>受付用ページ</title>
+        <link rel="stylesheet" href="index.css">
+    </head>
+    <body>
+        <script type="text/javascript">
+            // const backend_url = "https://casher-yy7tpgmgqa-uw.a.run.app"
+            const backend_url = "http://localhost:8000"
+            function reception() {
+                const xhr = new XMLHttpRequest();
+                xhr.open("POST", backend_url+"/reception");
+                xhr.send();
+                xhr.responseType = "text";
+                xhr.onload = () => {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        if (xhr.response == "true") {
+                            alert("受付ができました")
+                        } else {
+                            alert("受付に失敗しました")
+                        }
+                    }
+                }
+            }
+        </script>
+        <div class="container">
+            <div class="content">
+                <h2>整理券確認</h2>
+                <p>このボタンは整理券を発行したお客③を入れるときに使って</p>
+                <div class="button" onclick="reception()">受付</div>
+            </div>
+        </div>
+    </body>
+</html>
