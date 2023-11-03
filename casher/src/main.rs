@@ -44,10 +44,9 @@ fn reserve(mut time: usize, ip: String) -> String {
     // status=1: default(error) code
     let json ;
     let now = Local::now().with_timezone(&Tokyo);
-    let mut hour = format!("{}", now.format("%H")).parse::<usize>().unwrap();
-    let mut minute = format!("{}", now.format("%M")).parse::<usize>().unwrap();
+    let hour = format!("{}", now.format("%H")).parse::<usize>().unwrap();
+    let minute = format!("{}", now.format("%M")).parse::<usize>().unwrap();
     // test time
-    hour = 10; minute = 10;
     let now_time = Time{hour, minute};
     let now_time_num = (hour-9)*2-1 + if minute>=30 {1} else {0};
     if time == 0 {
