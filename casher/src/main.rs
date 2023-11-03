@@ -49,6 +49,7 @@ fn reserve(mut time: usize, ip: String) -> String {
     // test time
     hour = 10; minute = 10;
     let now_time = Time{hour, minute};
+    let now_time_num = (hour-9)*2-1 + if minute>=30 {1} else {0};
     if time == 0 {
         for i in 0..15 {
             if RESERVE_TABLE.lock()[i] < COUNT_LIMIT && !(Time{hour: (i+2)/2+9, minute: if (i+1)%2==1 {0} else {30}}).cmp(now_time){
@@ -63,7 +64,6 @@ fn reserve(mut time: usize, ip: String) -> String {
             };
             return json.dump();
         }
-        println!("time: {}", time);
     } else {
         let specified_time = Time{hour: (time+1)/2+9, minute: if time%2==1 {0} else {30}};
         if specified_time.cmp(now_time) {
@@ -73,6 +73,12 @@ fn reserve(mut time: usize, ip: String) -> String {
             };
             return json.dump()
         }
+    }
+    if time - now_time_num > 5 {
+        json = object! {
+            status: 4
+        };
+        return json.dump()
     }
     if RESERVE_TABLE.lock()[time - 1] < COUNT_LIMIT {
         let mut reserve_table = RESERVE_TABLE.lock();
