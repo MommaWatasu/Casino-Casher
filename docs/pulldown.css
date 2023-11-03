@@ -53,3 +53,7 @@ select.classic:focus {
     border-color: grey;
     outline: 0;
 }
+
+.dropdown {
+    margin-top: 20px;
+}

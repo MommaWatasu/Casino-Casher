@@ -33,11 +33,7 @@ body {
     display: flex;
 }
 
-.nav li {
-    margin-left: 20px;
-}
-
-.nav a {
+.nav {
     color: #fff;
     text-decoration: none;
     font-size: 40px;
@@ -71,12 +67,12 @@ body {
 
 .content {
     padding: 40px;
+    padding-top: 10px;
 }
 
 .content h2 {
     color: #f00;
     font-size: 36px;
-    margin-bottom: 20px;
 }
 
 .content p {
@@ -113,7 +109,8 @@ body {
         height:75px;
         border-radius: 10px;
         background-color: #f00;
-        margin: 10px auto;
+        margin: 40px auto;
+        padding: 20px 20px;
         color: #fff;
         font-size: 50px;
         font-weight: bold;
@@ -121,16 +118,13 @@ body {
         line-height: 50px;
     }
     .logo {
-        width: 240px;
+        width: 50vw;
         height: 50px;
     }
-    .nav li {
-        margin-left: 10px;
-    }
-    .nav a {
+    .nav {
         color: #fff;
         text-decoration: none;
-        font-size: 30px;
+        font-size: 20px;
         border-width: 2px;
         border-color: #fff;
     }
