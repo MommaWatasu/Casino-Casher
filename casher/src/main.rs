@@ -48,7 +48,7 @@ fn reserve(mut time: usize, ip: String) -> String {
     let minute = format!("{}", now.format("%M")).parse::<usize>().unwrap();
     // test time
     let now_time = Time{hour, minute};
-    let now_time_num = (hour-9)*2-1 + if minute>=30 {1} else {0};
+    let now_time_num = ((hour as isize-9)*2-1 + if minute>=30 {1} else {0}) as usize;
     if time == 0 {
         for i in 0..15 {
             if RESERVE_TABLE.lock()[i] < COUNT_LIMIT && !(Time{hour: (i+2)/2+9, minute: if (i+1)%2==1 {0} else {30}}).cmp(now_time){
