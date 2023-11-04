@@ -84,14 +84,18 @@ function cancel_reserve() {
 }
 
 window.addEventListener("load", async function() {
-  ip = await fetch('https://ipinfo.io?callback')
-    .then(res => res.json())
-    .then(json => json.ip)
-    .catch((err) => {
-      if (!alert("IPアドレスの取得に失敗しました。広告ブロックやトラッキングを解除してください")) {
-        window.location.reload();
-      }
-    });
+  let data = localStorage.getItem("ip");
+  if (data) ip = data;
+  else {
+    ip = await fetch('https://ipinfo.io?callback')
+      .then(res => res.json())
+      .then(json => (localStorage.setItem("ip", json.ip), json.ip))
+      .catch((err) => {
+        if (!alert("IPアドレスの取得に失敗しました。広告ブロックやトラッキングを解除してください")) {
+          window.location.reload();
+        }
+      });
+  }
   const xhr = new XMLHttpRequest();
   xhr.open("GET", backend_url+"/check_user?ip="+String(ip));
   xhr.send();
